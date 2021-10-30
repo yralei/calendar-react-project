@@ -1,27 +1,67 @@
-import React, { Component } from "react";
-import Header from "./components/header/Header.jsx";
-import Calendar from "./components/calendar/Calendar.jsx";
+import React, { useState, useEffect } from 'react';
+import moment from 'moment';
+import Header from './components/header/Header.jsx';
+import Calendar from './components/calendar/Calendar.jsx';
+import { getWeekStartDate, generateWeekRange } from '../src/utils/dateUtils.js';
 
-import { getWeekStartDate, generateWeekRange } from "../src/utils/dateUtils.js";
+import './common.scss';
 
-import "./common.scss";
+const App = () => {
+  const date = new Date();
+  const [weekDates, setWeekDates] = useState(generateWeekRange(getWeekStartDate(date)));
+  const [monthText, setMonthText] = useState('');
 
-class App extends Component {
-  state = {
-    weekStartDate: new Date(),
+  const handleLeft = () => {
+    const nextWeekFirstDay = moment(weekDates[0]).subtract(7, 'day').toDate();
+    setWeekDates(generateWeekRange(nextWeekFirstDay));
   };
 
-  render() {
-    const { weekStartDate } = this.state;
-    const weekDates = generateWeekRange(getWeekStartDate(weekStartDate));
+  const handleRight = () => {
+    const nextWeekFirstDay = moment(weekDates[6]).add(1, 'day').toDate();
+    setWeekDates(generateWeekRange(nextWeekFirstDay));
+  };
+  const handleTodayBtn = () => {
+    setWeekDates(generateWeekRange(getWeekStartDate(date)));
+  };
 
-    return (
-      <>
-        <Header />
-        <Calendar weekDates={weekDates} />
-      </>
-    );
-  }
-}
+  useEffect(() => {
+    const firstDayMonth = moment(weekDates[0]).format('MMMM');
+    const lastDayMonth = moment(weekDates[6]).format('MMMM');
+    const toSet =
+      firstDayMonth === lastDayMonth ? firstDayMonth : `${firstDayMonth} - ${lastDayMonth}`;
+    setMonthText(toSet);
+  }, [weekDates]);
+
+  return (
+    <>
+      <Header
+        onToday={handleTodayBtn}
+        onLeft={handleLeft}
+        onRight={handleRight}
+        month={monthText}
+      />
+
+      <Calendar weekDates={weekDates} />
+    </>
+  );
+};
+
+// class App extends Component {
+//   state = {
+//     weekStartDate: new Date(),
+//   };
+
+//   render() {
+//     const { weekStartDate } = this.state;
+//     const weekDates = generateWeekRange(getWeekStartDate(weekStartDate));
+
+//     return (
+//       <>
+//         <Header />
+//         <Calendar weekDates={weekDates} />
+//       </>
+//     );
+//   }
+// }
 
 export default App;
