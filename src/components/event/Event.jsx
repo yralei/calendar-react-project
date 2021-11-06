@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-
+import PropTypes from 'prop-types';
 import './event.scss';
+import { validationForDelete } from '../../utils/validation';
 
 const Event = ({ height, marginTop, title, time, hangleDeleteEvent, id }) => {
   const [deleteEventButton, setDeleteEventButton] = useState(false);
@@ -10,8 +11,11 @@ const Event = ({ height, marginTop, title, time, hangleDeleteEvent, id }) => {
   };
 
   const handleDelete = () => {
-    console.log('delete');
-    hangleDeleteEvent(id);
+    if (validationForDelete(time)) {
+      alert("Event starts in less then 15 minutes, you cann't delete it");
+    } else {
+      hangleDeleteEvent(id);
+    }
   };
 
   const eventStyle = {
@@ -32,6 +36,15 @@ const Event = ({ height, marginTop, title, time, hangleDeleteEvent, id }) => {
       </div>
     </>
   );
+};
+
+Event.propTypes = {
+  height: PropTypes.number.isRequired,
+  marginTop: PropTypes.number.isRequired,
+  title: PropTypes.string,
+  hangleDeleteEvent: PropTypes.func.isRequired,
+  time: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default Event;

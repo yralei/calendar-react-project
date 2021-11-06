@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { getDateTime } from '../../utils/dateUtils';
+import PropTypes from 'prop-types';
+import { durationOfEvent, multiples } from '../../utils/validation';
 import moment from 'moment';
 import './modal.scss';
-import { getDateTime } from '../../utils/dateUtils';
 
 const Modal = ({ toggleModal, handleAddEvent }) => {
   const [modalState, setModalState] = useState({
@@ -20,22 +22,29 @@ const Modal = ({ toggleModal, handleAddEvent }) => {
     });
   };
 
-  const { id, date, title, dateFrom, dateTo, description } = modalState;
-
-  const updatedEvent = {
-    id,
-    title,
-    description,
-    dateFrom: getDateTime(date, dateFrom),
-    dateTo: getDateTime(date, dateTo),
-  };
-
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(modalState);
-    handleAddEvent(updatedEvent);
+
+    const updatedEvent = {
+      id,
+      title,
+      description,
+      dateFrom: getDateTime(date, dateFrom),
+      dateTo: getDateTime(date, dateTo),
+    };
+    if (dateFrom > dateTo) {
+      alert('You should to done it in one day');
+    } else if (durationOfEvent(dateFrom, dateTo)) {
+      alert("It's very long, you should to done it in 6 houres");
+    } else if (multiples(dateFrom, dateTo)) {
+      alert('The start of event and duration must be multiples to 15');
+    } else {
+      handleAddEvent(updatedEvent);
+      toggleModal();
+    }
   };
 
+  const { id, date, title, dateFrom, dateTo, description } = modalState;
   return (
     <div className="modal overlay">
       <div className="modal__content">
@@ -91,6 +100,11 @@ const Modal = ({ toggleModal, handleAddEvent }) => {
       </div>
     </div>
   );
+};
+
+Modal.propTypes = {
+  toggleModal: PropTypes.func.isRequired,
+  handleAddEvent: PropTypes.func.isRequired,
 };
 
 export default Modal;

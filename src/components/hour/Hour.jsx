@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Modal from '../modal/Modal';
+import PropTypes from 'prop-types';
 import Event from '../event/Event';
 import { formatMins } from '../../../src/utils/dateUtils.js';
 import './hour.scss';
 
-const Hour = ({ dataHour, hourEvents, hangleDeleteEvent, isCurrentDay }) => {
+const Hour = ({ dataHour, hourEvents, hangleDeleteEvent, isCurrentDay, toggleModal }) => {
   const [hour, setHour] = useState(new Date().getHours());
 
   const [minutes, setMinutes] = useState(new Date().getMinutes());
@@ -24,32 +24,45 @@ const Hour = ({ dataHour, hourEvents, hangleDeleteEvent, isCurrentDay }) => {
     // };
   });
   return (
-    <>
-      <div className="calendar__time-slot" data-time={dataHour + 1}>
-        {isCurrentDay && hour === dataHour && (
-          <div className="redLine" style={{ top: minutes }}></div>
-        )}
-        {/* if no events in the current hour nothing will render here */}
-        {hourEvents.map(({ id, dateFrom, dateTo, title }) => {
-          const eventStart = `${dateFrom.getHours()}:${formatMins(dateFrom.getMinutes())}`;
-          const eventEnd = `${dateTo.getHours()}:${formatMins(dateTo.getMinutes())}`;
+    <div
+      className="calendar__time-slot"
+      data-time={dataHour + 1}
+      onClick={() => {
+        if (hourEvents.length === 0) {
+          toggleModal();
+        }
+      }}
+    >
+      {isCurrentDay && hour === dataHour && (
+        <div className="redLine" style={{ top: minutes }}></div>
+      )}
+      {/* if no events in the current hour nothing will render here */}
+      {hourEvents.map(({ id, dateFrom, dateTo, title }) => {
+        const eventStart = `${dateFrom.getHours()}:${formatMins(dateFrom.getMinutes())}`;
+        const eventEnd = `${dateTo.getHours()}:${formatMins(dateTo.getMinutes())}`;
 
-          return (
-            <Event
-              key={id}
-              //calculating event height = duration of event in minutes
-              height={(dateTo.getTime() - dateFrom.getTime()) / (1000 * 60)}
-              marginTop={dateFrom.getMinutes()}
-              time={`${eventStart} - ${eventEnd}`}
-              title={title}
-              hangleDeleteEvent={hangleDeleteEvent}
-              id={id}
-            />
-          );
-        })}
-      </div>
-    </>
+        return (
+          <Event
+            key={id}
+            //calculating event height = duration of event in minutes
+            height={(dateTo.getTime() - dateFrom.getTime()) / (1000 * 60)}
+            marginTop={dateFrom.getMinutes()}
+            time={`${eventStart} - ${eventEnd}`}
+            title={title}
+            hangleDeleteEvent={hangleDeleteEvent}
+            id={id}
+          />
+        );
+      })}
+    </div>
   );
+};
+
+Hour.propTypes = {
+  dataHour: PropTypes.number.isRequired,
+  hourEvents: PropTypes.array.isRequired,
+  hangleDeleteEvent: PropTypes.func.isRequired,
+  isCurrentDay: PropTypes.bool.isRequired,
 };
 
 export default Hour;

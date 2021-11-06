@@ -5,6 +5,7 @@ import Week from '../week/Week';
 import Sidebar from '../sidebar/Sidebar';
 import { fetchEventsList, createEvent, deleteEvent } from '../../gateway/gateWay';
 import Modal from '../modal/Modal';
+import PropTypes from 'prop-types';
 
 import './calendar.scss';
 
@@ -51,6 +52,12 @@ const Calendar = ({ weekDates, isModal, toggleModal }) => {
       </section>
     </>
   );
+};
+
+Calendar.propTypes = {
+  weekDates: PropTypes.array.isRequired,
+  isModal: PropTypes.bool.isRequired,
+  toggleModal: PropTypes.func.isRequired,
 };
 
 export default Calendar;

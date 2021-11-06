@@ -1,6 +1,6 @@
 import React from 'react';
 import Day from '../day/Day';
-
+import PropTypes from 'prop-types';
 import './week.scss';
 
 const Week = ({ weekDates, events, toggleModal, hangleDeleteEvent }) => {
@@ -14,6 +14,7 @@ const Week = ({ weekDates, events, toggleModal, hangleDeleteEvent }) => {
           event => event.dateFrom > dayStart && event.dateTo < dayEnd,
         );
         const isCurrentDay = dayStart.getDate() === new Date().getDate();
+
         return (
           <Day
             isCurrentDay={isCurrentDay}
@@ -27,6 +28,13 @@ const Week = ({ weekDates, events, toggleModal, hangleDeleteEvent }) => {
       })}
     </div>
   );
+};
+
+Week.propTypes = {
+  weekDates: PropTypes.array.isRequired,
+  events: PropTypes.array.isRequired,
+  toggleModal: PropTypes.func.isRequired,
+  hangleDeleteEvent: PropTypes.func.isRequired,
 };
 
 export default Week;
