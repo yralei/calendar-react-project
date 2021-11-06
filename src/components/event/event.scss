@@ -22,6 +22,14 @@
 }
 
 .delete-event-btn {
+  position: absolute;
+  z-index: 2;
+
   cursor: pointer;
   border: none;
+  border-radius: 3px;
+  &:hover {
+    font-weight: bold;
+    background-color: red;
+  }
 }

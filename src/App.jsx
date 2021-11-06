@@ -10,6 +10,11 @@ const App = () => {
   const date = new Date();
   const [weekDates, setWeekDates] = useState(generateWeekRange(getWeekStartDate(date)));
   const [monthText, setMonthText] = useState('');
+  const [isModal, setIsModal] = useState(false);
+
+  const toggleModal = () => {
+    setIsModal(!isModal);
+  };
 
   const handleLeft = () => {
     const nextWeekFirstDay = moment(weekDates[0]).subtract(7, 'day').toDate();
@@ -39,29 +44,12 @@ const App = () => {
         onLeft={handleLeft}
         onRight={handleRight}
         month={monthText}
+        onEventCreate={toggleModal}
       />
 
-      <Calendar weekDates={weekDates} />
+      <Calendar weekDates={weekDates} toggleModal={toggleModal} isModal={isModal} />
     </>
   );
 };
-
-// class App extends Component {
-//   state = {
-//     weekStartDate: new Date(),
-//   };
-
-//   render() {
-//     const { weekStartDate } = this.state;
-//     const weekDates = generateWeekRange(getWeekStartDate(weekStartDate));
-
-//     return (
-//       <>
-//         <Header />
-//         <Calendar weekDates={weekDates} />
-//       </>
-//     );
-//   }
-// }
 
 export default App;
