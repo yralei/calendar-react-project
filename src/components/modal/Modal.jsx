@@ -2,18 +2,11 @@ import React, { useState } from 'react';
 import { getDateTime } from '../../utils/dateUtils';
 import PropTypes from 'prop-types';
 import { durationOfEvent, multiples } from '../../utils/validation';
-import moment from 'moment';
+
 import './modal.scss';
 
 const Modal = ({ toggleModal, handleAddEvent }) => {
   const [modalState, setModalState] = useState({
-    // id: Date.now(),
-    // title: '',
-    // date: moment().format('YYYY-MM-DD'),
-    // dateFrom: moment().format('HH:mm'),
-    // dateTo: moment().add(1, 'h').format('HH:mm'),
-    // description: '',
-
     id: Date.now(),
     title: '',
     date: '',
