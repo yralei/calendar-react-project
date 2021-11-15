@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './event.scss';
 import { validationForDelete } from '../../utils/validation';
 
-const Event = ({ height, marginTop, title, time, hangleDeleteEvent, id }) => {
+const Event = ({ height, marginTop, title, time, hangleDeleteEvent, id, isCurrentDay }) => {
   const [deleteEventButton, setDeleteEventButton] = useState(false);
 
   const showDeleteButton = () => {
@@ -11,7 +11,7 @@ const Event = ({ height, marginTop, title, time, hangleDeleteEvent, id }) => {
   };
 
   const handleDelete = () => {
-    if (validationForDelete(time)) {
+    if (validationForDelete(time) && isCurrentDay) {
       alert("Event starts in less then 15 minutes, you cann't delete it");
     } else {
       hangleDeleteEvent(id);

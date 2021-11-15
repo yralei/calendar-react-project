@@ -49,6 +49,7 @@ const Hour = ({ dataHour, hourEvents, hangleDeleteEvent, isCurrentDay, toggleMod
             marginTop={dateFrom.getMinutes()}
             time={`${eventStart} - ${eventEnd}`}
             title={title}
+            isCurrentDay={isCurrentDay}
             hangleDeleteEvent={hangleDeleteEvent}
             id={id}
           />

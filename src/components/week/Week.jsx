@@ -13,6 +13,7 @@ const Week = ({ weekDates, events, toggleModal, hangleDeleteEvent }) => {
         const dayEvents = events.filter(
           event => event.dateFrom > dayStart && event.dateTo < dayEnd,
         );
+
         const isCurrentDay = dayStart.getDate() === new Date().getDate();
 
         return (

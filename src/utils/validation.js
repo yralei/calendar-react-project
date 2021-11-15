@@ -17,6 +17,7 @@ export const multiples = (dateFrom, dateTo) => {
 };
 
 export const validationForDelete = time => {
+  console.log(time);
   const startTime = time.substring(0, 5).split(':');
   const currentTime = moment(new Date()).format('HH:mm').split(':');
 

@@ -7,11 +7,18 @@ import './modal.scss';
 
 const Modal = ({ toggleModal, handleAddEvent }) => {
   const [modalState, setModalState] = useState({
+    // id: Date.now(),
+    // title: '',
+    // date: moment().format('YYYY-MM-DD'),
+    // dateFrom: moment().format('HH:mm'),
+    // dateTo: moment().add(1, 'h').format('HH:mm'),
+    // description: '',
+
     id: Date.now(),
     title: '',
-    date: moment().format('YYYY-MM-DD'),
-    dateFrom: moment().format('HH:mm'),
-    dateTo: moment().add(1, 'h').format('HH:mm'),
+    date: '',
+    dateFrom: '',
+    dateTo: '',
     description: '',
   });
 
@@ -25,23 +32,29 @@ const Modal = ({ toggleModal, handleAddEvent }) => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    const updatedEvent = {
+    if (dateFrom > dateTo) {
+      alert('You should to done it in one day');
+      return;
+    }
+
+    if (durationOfEvent(dateFrom, dateTo)) {
+      alert("It's very long, you should to done it in 6 houres");
+      return;
+    }
+
+    if (multiples(dateFrom, dateTo)) {
+      alert('The start of event and duration must be multiples to 15');
+      return;
+    }
+
+    handleAddEvent({
       id,
       title,
       description,
       dateFrom: getDateTime(date, dateFrom),
       dateTo: getDateTime(date, dateTo),
-    };
-    if (dateFrom > dateTo) {
-      alert('You should to done it in one day');
-    } else if (durationOfEvent(dateFrom, dateTo)) {
-      alert("It's very long, you should to done it in 6 houres");
-    } else if (multiples(dateFrom, dateTo)) {
-      alert('The start of event and duration must be multiples to 15');
-    } else {
-      handleAddEvent(updatedEvent);
-      toggleModal();
-    }
+    });
+    toggleModal();
   };
 
   const { id, date, title, dateFrom, dateTo, description } = modalState;
